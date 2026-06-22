@@ -5,6 +5,10 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![Trivy](https://img.shields.io/badge/trivy-%231E90FF.svg?style=for-the-badge&logo=trivy&logoColor=white)
+
+> **GitHub Repo Description:** Kubernetes deployment project with Docker, raw manifests, Helm, Ingress, HPA, probes, resource limits, NetworkPolicy, and GitHub Actions validation.
+> **Topics:** `kubernetes`, `helm`, `docker`, `ingress`, `hpa`, `devops`, `cloud`, `github-actions`, `kubernetes-manifests`, `trivy`
 
 ## 1. Project Overview
 This repository serves as a showcase of Kubernetes application deployment fundamentals. It demonstrates how to containerize a microservice, deploy it securely and reliably to a Kubernetes cluster using raw manifests, and package it using Helm for automated management. 
@@ -114,10 +118,21 @@ The `.github/workflows/ci.yml` pipeline automatically ensures code quality and s
 - Scans the Kubernetes manifests for security misconfigurations using **Trivy**.
 
 ## 9. Screenshots / Proof of Work
-*(Placeholders for future screenshots)*
-- **CI Pipeline Success:** `docs/screenshots/ci-success.png`
-- **Pods Running & HPA Metrics:** `docs/screenshots/kubectl-get-all.png`
-- **Helm Release Status:** `docs/screenshots/helm-ls.png`
+
+**Helm Install Success:**
+![Helm Install Success](docs/screenshots/helm-install-success.png)
+
+**Kubernetes Resources (kubectl get all):**
+![Kubernetes Resources](docs/screenshots/kubectl-get-all.png)
+
+**HPA, Ingress, & NetworkPolicy:**
+![HPA, Ingress, NetworkPolicy](docs/screenshots/hpa-ingress-networkpolicy.png)
+
+**Port Forwarding & Curl Test:**
+![Port Forwarding Curl Success](docs/screenshots/port-forward-curl-success.png)
+
+**GitHub Actions CI Pipeline Success:**
+![GitHub Actions Success](docs/screenshots/github-actions-success.png)
 
 ## 10. Portfolio Scope / Related Projects
 **Important Note:** This repository strictly focuses on Kubernetes application deployment patterns (Helm, HPA, Probes, etc.). 
