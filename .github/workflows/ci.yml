@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    name: Build & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t node-app:latest .
+
+      - name: Validate Raw Manifests
+        uses: instrumenta/kubeval-action@master
+        with:
+          files: k8s
+          ignore-missing-schemas: true
+
+      - name: Lint Helm Chart
+        run: helm lint helm/node-app
+
+      - name: Template Helm Chart
+        run: helm template node-app helm/node-app --debug
+
+      - name: Security Scan (Trivy) on Manifests
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: 'k8s/'
+          hide-progress: false
+          format: 'table'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'

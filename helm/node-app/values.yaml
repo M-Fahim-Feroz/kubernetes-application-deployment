@@ -1,0 +1,45 @@
+replicaCount: 2
+
+image:
+  repository: node-app
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: node-app.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+env:
+  NODE_ENV: "production"
+  CONFIG_VALUE: "ConfigMap value from Helm"
+
+secret:
+  SECRET_VALUE: "super_secret_placeholder_value_helm"
+
+networkPolicy:
+  enabled: true

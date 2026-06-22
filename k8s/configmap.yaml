@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-app-config
+  namespace: node-app-namespace
+data:
+  NODE_ENV: "production"
+  CONFIG_VALUE: "ConfigMap value injected successfully"
