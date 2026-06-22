@@ -15,8 +15,20 @@ spec:
       labels:
         app: node-app
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: node-app
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: node-app:latest
           imagePullPolicy: IfNotPresent
           ports:
