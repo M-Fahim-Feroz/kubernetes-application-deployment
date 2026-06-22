@@ -3,8 +3,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /usr/src/app
 
-COPY src/package*.json ./
-RUN npm ci --only=production
+COPY src/package.json src/package-lock.json ./
+RUN npm ci --omit=dev
 
 # Final stage
 FROM node:20-alpine
@@ -15,6 +15,7 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY src/package.json src/package-lock.json ./
 COPY src/index.js ./
 
 # Change ownership

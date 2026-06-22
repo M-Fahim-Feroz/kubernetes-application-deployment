@@ -64,3 +64,18 @@ helm get manifest node-app -n node-app-namespace
 # Upgrade a release after modifying values
 helm upgrade node-app helm/node-app/ -n node-app-namespace
 ```
+
+## Safe Cleanup & Reset
+```bash
+# Delete raw resources without deleting namespace
+kubectl delete -f k8s/networkpolicy.yaml,k8s/hpa.yaml,k8s/ingress.yaml,k8s/service.yaml,k8s/deployment.yaml,k8s/secret.yaml,k8s/configmap.yaml
+
+# Delete namespace only when intentionally resetting the environment
+kubectl delete -f k8s/namespace.yaml
+
+# Check namespace status (Useful if it gets stuck in Terminating)
+kubectl get ns node-app-namespace
+
+# Wait until namespace is fully deleted before reinstalling Helm
+kubectl get ns
+```

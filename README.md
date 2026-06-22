@@ -62,12 +62,21 @@ To deploy using standard Kubernetes YAML files:
 make k8s-apply
 ```
 This applies the Namespace, ConfigMap, Secret, Deployment, Service, Ingress, HPA, and NetworkPolicy.
-To clean up:
+
+**Safe Cleanup:**
+To delete the resources without deleting the namespace (recommended to avoid conflicts with Helm later):
 ```bash
 make k8s-delete
 ```
+To completely destroy everything including the namespace:
+```bash
+make k8s-delete-all
+```
 
 ## 7. Helm Deployment
+> [!WARNING]
+> Do not run `kubectl delete -f k8s/` or `make k8s-delete-all` immediately before a Helm install. Deleting a namespace can take time, and Kubernetes will keep it in a `Terminating` state, which causes Helm installations to fail with `forbidden` errors. Always use `make k8s-delete` or ensure the namespace is fully terminated first.
+
 To deploy using the parameterized Helm chart:
 ```bash
 # Validate and view the generated manifests
@@ -81,6 +90,21 @@ To clean up:
 ```bash
 make helm-uninstall
 ```
+
+### Windows Manual Commands (Without Make)
+If `make` is unavailable on Windows, use these PowerShell equivalents:
+
+**Raw Manifests:**
+- Apply: `kubectl apply -f k8s/namespace.yaml; kubectl apply -f k8s/configmap.yaml; kubectl apply -f k8s/secret.yaml; kubectl apply -f k8s/deployment.yaml; kubectl apply -f k8s/service.yaml; kubectl apply -f k8s/ingress.yaml; kubectl apply -f k8s/hpa.yaml; kubectl apply -f k8s/networkpolicy.yaml`
+- Safe Delete: `kubectl delete -f k8s/networkpolicy.yaml,k8s/hpa.yaml,k8s/ingress.yaml,k8s/service.yaml,k8s/deployment.yaml,k8s/secret.yaml,k8s/configmap.yaml`
+- Delete All: `kubectl delete -f k8s/`
+
+**Helm:**
+- Lint: `helm lint helm/node-app/`
+- Template: `helm template node-app helm/node-app/`
+- Install: `helm install node-app helm/node-app/ -n node-app-namespace --create-namespace`
+- Uninstall: `helm uninstall node-app -n node-app-namespace`
+- Reset: `helm uninstall node-app -n node-app-namespace`
 
 ## 8. CI Validation
 The `.github/workflows/ci.yml` pipeline automatically ensures code quality and security on every push:
