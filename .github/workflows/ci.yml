@@ -6,22 +6,33 @@ on:
   pull_request:
     branches: [ "main" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Build & Validate
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build Docker Image
         run: docker build -t node-app:latest .
 
       - name: Validate Raw Manifests
-        uses: instrumenta/kubeval-action@master
+        uses: yannh/kubeconform-action@v1
         with:
-          files: k8s
-          ignore-missing-schemas: true
+          kubernetes_version: '1.26.0'
+          kubernetes_core_version: '1.26.0'
+          chart_dirs: ''
+          manifests: 'k8s/'
+          verbose: true
 
       - name: Lint Helm Chart
         run: helm lint helm/node-app
@@ -30,7 +41,7 @@ jobs:
         run: helm template node-app helm/node-app --debug
 
       - name: Security Scan (Trivy) on Manifests
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'config'
           scan-ref: 'k8s/'

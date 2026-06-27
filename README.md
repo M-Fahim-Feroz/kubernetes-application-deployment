@@ -45,14 +45,14 @@ graph TD
 - **Containerization**: Docker
 - **Orchestration**: Kubernetes (Minikube / Docker Desktop)
 - **Package Management**: Helm
-- **CI/CD & Security**: GitHub Actions, Kubeval, Trivy
+- **CI/CD & Security**: GitHub Actions, Kubeconform, Trivy
 
 ## 5. Local Setup
 You can run this project locally using Docker Desktop (with Kubernetes enabled) or Minikube.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/kubernetes-application-deployment.git
+   git clone https://github.com/M-Fahim-Feroz/kubernetes-application-deployment.git
    cd kubernetes-application-deployment
    ```
 2. **Build the Docker Image:**
@@ -113,7 +113,7 @@ If `make` is unavailable on Windows, use these PowerShell equivalents:
 ## 8. CI Validation
 The `.github/workflows/ci.yml` pipeline automatically ensures code quality and security on every push:
 - Validates the Docker build.
-- Lints the Kubernetes YAML using `kubeval`.
+- Lints the Kubernetes YAML using `kubeconform`.
 - Verifies the Helm chart using `helm lint`.
 - Scans the Kubernetes manifests for security misconfigurations using **Trivy**.
 
@@ -139,6 +139,9 @@ The `.github/workflows/ci.yml` pipeline automatically ensures code quality and s
 To keep my portfolio modular and focused:
 - **AWS Infrastructure, Terraform, and EKS** are intentionally handled in a **separate portfolio project**.
 - **Advanced GitOps (ArgoCD), Monitoring (Prometheus/Grafana), and Automated TLS (Cert-Manager)** are implemented in other dedicated repositories.
+
+### Future Roadmap
+- Implementation of a full end-to-end `kind` cluster integration test in the GitHub Actions CI pipeline to dynamically test Helm installations prior to merge.
 
 I do not claim AWS, Terraform, or cloud vendor implementation within this specific repository.
 
