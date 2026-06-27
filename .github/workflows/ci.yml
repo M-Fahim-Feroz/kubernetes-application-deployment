@@ -25,14 +25,11 @@ jobs:
       - name: Build Docker Image
         run: docker build -t node-app:latest .
 
+      - name: Setup Kubeconform
+        uses: bmuschko/setup-kubeconform@v1
+
       - name: Validate Raw Manifests
-        uses: yannh/kubeconform-action@v1
-        with:
-          kubernetes_version: '1.26.0'
-          kubernetes_core_version: '1.26.0'
-          chart_dirs: ''
-          manifests: 'k8s/'
-          verbose: true
+        run: kubeconform -summary -verbose -strict -ignore-missing-schemas k8s/
 
       - name: Lint Helm Chart
         run: helm lint helm/node-app
@@ -41,7 +38,7 @@ jobs:
         run: helm template node-app helm/node-app --debug
 
       - name: Security Scan (Trivy) on Manifests
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: 'config'
           scan-ref: 'k8s/'
