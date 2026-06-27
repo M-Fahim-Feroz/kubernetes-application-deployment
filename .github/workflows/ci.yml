@@ -41,7 +41,7 @@ jobs:
         run: helm template node-app helm/node-app --debug
 
       - name: Security Scan (Trivy) on Manifests
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: 'config'
           scan-ref: 'k8s/'
