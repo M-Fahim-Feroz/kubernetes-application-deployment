@@ -61,11 +61,16 @@ You can run this project locally using Docker Desktop (with Kubernetes enabled) 
    ```
 
 ## 6. Raw Manifest Deployment
-To deploy using standard Kubernetes YAML files:
+To avoid deploying the literal `IMAGE_TAG` placeholder during local testing, you should use the rendering deployment targets.
+
+To specify a custom tag and deploy using standard Kubernetes YAML files:
 ```bash
-make k8s-apply
+make docker-build IMAGE_TAG=v1.0.0
+make k8s-deploy-rendered IMAGE_TAG=v1.0.0
 ```
-This applies the Namespace, ConfigMap, Secret, Deployment, Service, Ingress, HPA, and NetworkPolicy.
+This renders the manifests into a local `.rendered/` directory and applies the Namespace, ConfigMap, Secret, Deployment, Service, Ingress, HPA, and NetworkPolicy.
+
+*(Alternatively, to strictly deploy un-rendered raw templates without tag injection, run `make k8s-apply`)*
 
 **Safe Cleanup:**
 To delete the resources without deleting the namespace (recommended to avoid conflicts with Helm later):
@@ -135,7 +140,14 @@ The `.github/workflows/ci.yml` pipeline automatically ensures code quality and s
 **GitHub Actions CI Pipeline Success:**
 ![GitHub Actions Success](docs/screenshots/github-actions-success.png)
 
-## 10. Portfolio Scope / Related Projects
+## 10. Release & Changelog
+### Suggested First Release
+- **v1.0.0**: Initial portfolio-ready release.
+  - Includes full CI/CD pipeline, security cleanup, and structured deployment documentation.
+- See `CHANGELOG.md` for a complete history of updates.
+- It is highly recommended to leverage [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) to bundle version tags cleanly.
+
+## 11. Portfolio Scope / Related Projects
 **Important Note:** This repository strictly focuses on Kubernetes application deployment patterns (Helm, HPA, Probes, etc.). 
 To keep my portfolio modular and focused:
 - **AWS Infrastructure, Terraform, and EKS** are intentionally handled in a **separate portfolio project**.
