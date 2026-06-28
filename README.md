@@ -1,5 +1,8 @@
 # Kubernetes Application Deployment with Helm, HPA, and Ingress
 
+[![CI Pipeline](https://github.com/M-Fahim-Feroz/kubernetes-application-deployment/actions/workflows/ci.yml/badge.svg)](https://github.com/M-Fahim-Feroz/kubernetes-application-deployment/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 ![Helm](https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
@@ -22,7 +25,19 @@ For hiring managers and technical interviewers, this project proves my ability t
 - Author reusable **Helm Charts** to parameterize deployments for various environments.
 - Establish a **GitHub Actions CI Pipeline** to statically validate manifests and scan for security misconfigurations.
 
+## Project Highlights
+
+- **Declarative Kubernetes deployment** — all workloads defined as raw YAML manifests covering Deployments, Services, ConfigMaps, Secrets, Ingress, HPA, and NetworkPolicy
+- **Helm chart packaging** — same app packaged as a Helm chart with templated values for multi-environment parameterization
+- **Security-first design** — non-root container user, NetworkPolicy restricting pod-to-pod traffic, resource requests/limits, and liveness/readiness probes on every deployment
+- **CI-validated manifests** — GitHub Actions runs Trivy container scan and kubeconform manifest validation on every pull request
+- **IMAGE_TAG injection** — CI replaces `IMAGE_TAG` placeholder in deployment manifests with the Git commit SHA at runtime using `sed`, preventing stale image pulls
+- **Local rendering workflow** — `make k8s-deploy-rendered IMAGE_TAG=v1.0.0` renders and deploys manifests locally without requiring CI
+
 ## 3. Architecture
+
+> See the [full architecture diagram](docs/architecture.md) with Mermaid flowcharts.
+
 The application is a simple Node.js REST API designed to demonstrate environment injection and Kubernetes probing.
 
 ```mermaid
