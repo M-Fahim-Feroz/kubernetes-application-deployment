@@ -113,6 +113,7 @@ If `make` is unavailable on Windows, use these PowerShell equivalents:
 ## 8. CI Validation
 The `.github/workflows/ci.yml` pipeline automatically ensures code quality and security on every push:
 - Validates the Docker build.
+- Injects the dynamic commit SHA (`${{ github.sha }}`) into the deployment manifest to enforce unique image tags instead of using `latest`.
 - Lints the Kubernetes YAML using `kubeconform`.
 - Verifies the Helm chart using `helm lint`.
 - Scans the Kubernetes manifests for security misconfigurations using **Trivy**.

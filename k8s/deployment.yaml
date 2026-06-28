@@ -29,7 +29,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-          image: node-app:latest
+          image: node-app:IMAGE_TAG
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

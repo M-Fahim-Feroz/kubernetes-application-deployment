@@ -1,5 +1,7 @@
 name: CI/CD Pipeline
 
+# TODO: For production-grade supply-chain security, pin GitHub Actions to full commit SHAs instead of version tags.
+
 on:
   push:
     branches: [ "main" ]
@@ -23,7 +25,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: docker build -t node-app:latest .
+        run: docker build -t node-app:${{ github.sha }} .
+
+      - name: Inject Image Tag into Manifests
+        run: |
+          sed -i "s/IMAGE_TAG/${{ github.sha }}/g" k8s/deployment.yaml
 
       - name: Setup Kubeconform
         uses: bmuschko/setup-kubeconform@v1
